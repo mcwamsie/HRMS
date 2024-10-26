@@ -195,7 +195,7 @@ class PersonalSurveyDetailsView(AccessRequiredMixin, UpdateView):
     template_name = 'pages/personal_tasks_details.html'
     required_roles = ["ADMIN", "HR OFFICER", "EMPLOYEE"]
     form_class = DocumentUploadForm
-    model = Assignment
+    model = SurveyRecord
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
