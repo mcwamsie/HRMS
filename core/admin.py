@@ -62,6 +62,7 @@ class MemberAdmin(UserAdmin, ImportExportModelAdmin):
             'classes': ('wide',),
             'fields': (
                 'profilePhoto',
+                'username',
                 'email', 'password1', 'password2', 'first_name', 'last_name',
                 'sex',
                 'date_of_birth',
