@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin
 from core.models import Employee, Workflow, Location, Position, Department, JobOffering, JobOfferingRequiredDocument, \
-    Task, Assignment, JobAssignments, Notification, SurveyField, SurveyFieldChoice, SurveyRecord, SurveyRecordValue, SurveyHeading
+    Task, Assignment, JobAssignments, Notification, SurveyField, SurveyFieldChoice, SurveyRecord, SurveyRecordValue, \
+    SurveyHeading
 
 
 # Register your models here.
@@ -20,7 +22,7 @@ class SurveyFieldChoiceAdmin(admin.TabularInline):
 
 @admin.register(SurveyField)
 class SurveyFieldAdmin(ImportExportModelAdmin):
-    list_display = ["ordinal", 'label', "heading",'type', 'placeholder', 'required', "dp", "minimum", "maximum"]
+    list_display = ["ordinal", 'label', "heading", 'type', 'placeholder', 'required', "dp", "minimum", "maximum"]
     search_fields = ['label', 'placeholder']
     inlines = [SurveyFieldChoiceAdmin]
 
@@ -39,9 +41,36 @@ class LocationAdmin(ImportExportModelAdmin):
 
 
 @admin.register(Employee)
-class EmployeeAdmin(ImportExportModelAdmin):
+class MemberAdmin(UserAdmin, ImportExportModelAdmin):
+    model = Employee
+    ordering = ['last_name', "first_name"]
+    list_filter = ('is_staff', 'is_active', "role")
+    readonly_fields = ('date_joined',)
     list_display = ('employee_number', 'nationalIdNo', 'first_name', 'last_name', 'email', 'date_of_birth', "role")
     search_fields = ('first_name', 'employee_number', 'last_name', 'email', 'nationalIdNo')
+
+    fieldsets = (
+        (None, {'fields': ('email', 'password', "username", 'role')}),
+        ('Personal Info',
+         {'fields': ('profilePhoto', 'first_name', 'last_name', 'phone', 'sex', "address_line_1", 'address_line_2')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',)}),
+        ('Important dates', {'fields': ['date_joined']}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'profilePhoto',
+                'email', 'password1', 'password2', 'first_name', 'last_name',
+                'sex',
+                'date_of_birth',
+                'phone_number',
+                'sex', 'role',
+                'address_line_1',
+                'address_line_2'),
+        }),
+    )
 
 
 @admin.register(JobOffering)
@@ -83,7 +112,8 @@ class NotificationAdmin(ImportExportModelAdmin):
     list_display = ["subject", "description", "recipient", "author", "unread", "public", "emailed"]
     search_fields = ["code", "description"]
 
+
 @admin.register(SurveyHeading)
 class NotificationAdmin(ImportExportModelAdmin):
-    list_display = ["ordinal","name"]
+    list_display = ["ordinal", "name"]
     search_fields = ["name"]

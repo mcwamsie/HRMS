@@ -179,7 +179,7 @@ class Location(BaseModel):
 
 class Department(BaseModel):
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=3)
+    code = models.CharField(max_length=10, unique=True)
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
