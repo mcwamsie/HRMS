@@ -1,0 +1,66 @@
+{% extends "layouts/base.layout.html" %}
+{% load urlparams %}
+{% load misc %}
+{% load age_filters %}
+{% load static %}
+
+{% block content %}
+    <div class="layout-wrapper layout-2">
+        <div class="layout-inner">
+
+            <div class="layout-container pl-0">
+                {% include "includes/index_page/header.html" %}
+                <div class="layout-content">
+                    <div class="container-fluid d-flex flex-column flex-grow-1 pt-0 container-p-y">
+                        <img style="max-height: 300px; object-fit: cover; object-position: center; background-attachment: fixed"
+                             class="img-fluid w-100" src="{% static 'assets/img/bg/12.jpg' %}" alt="Home image"/>
+                        {% include 'includes/index_page/filter-card.html' %}
+                        <div class="row flex-grow-1 justify-content-center">
+                            <div class="col-12 order-2 order-lg-2 col-lg-5 col-xl-4 d-flex">
+                                <div class="card flex-grow-1">
+                                    {% if object_list.count %}
+                                        <div class="card-header font-weight-bold text-uppercase">
+                                            {{ object_list.count }} JOBS FOUND
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body p-0">
+                                        {% if object_list.count %}
+                                            <ul class="list-unstyled" aria-label="Page 1 of 26" role="list">
+                                                {% for object in object_list %}
+                                                    {% include "includes/index_page/job-offering-item.html" %}
+                                                {% endfor %}
+                                            </ul>
+
+                                            {% if page_obj %}
+                                                {% include "components/datatables/pagination.html" %}
+                                            {% endif %}
+                                        {% else %}
+                                            No Job Offerings Available
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% if job_offering %}
+                                {% include "includes/index_page/active-job-offering.html" %}
+                            {% else %}
+                                <div class="col-12 mb-4 mb-lg-0 order-1 order-lg-2 col-lg-auto d-flex">
+                                    <div style="min-width: 400px" class="card flex-grow-1">
+                                        <div class="card-header">
+
+                                        </div>
+                                        <div class="card-body">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

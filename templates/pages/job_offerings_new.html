@@ -1,0 +1,48 @@
+{% extends "layouts/app.layout.html" %}
+
+{% block app-content %}
+    {% include "includes/job_offering_new/header.html" %}
+    <div class="card">
+        <div class="card-body">
+            <form class="" novalidate method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+    	{% include "components/forms/error.html" with error=form.non_field_errors %}
+    {% endif %} 
+                <div class="row mb-4">
+                    <div class="col-12 col-md-6">
+                        {% include "components/forms/field.html" with field=form.position %}
+                        {% include "components/forms/field.html" with field=form.description %}
+                        {% include "components/forms/field.html" with field=form.workflow %}
+                        <div class="form-row">
+                            <div class="col-12 col-sm-6">
+                                {% include "components/forms/field.html" with field=form.type %}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                {% include "components/forms/field.html" with field=form.due_date %}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                {% include "components/forms/field.html" with field=form.contract_months %}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                {% include "components/forms/field.html" with field=form.number_of_candidates %}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                        {% include "components/forms/field.html" with field=form.locations %}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                        {% include "components/forms/field.html" with field=form.published %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        {#        {% include "includes/job_offering_list/filter-items.html" %}#}
+        {#        {% include "includes/job_offering_list/table.html" %}#}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layouts/base.layout.html" %}
+{% block content %}
+    <div class="layout-wrapper layout-2">
+        <div class="layout-inner">
+            {% include "layouts/app-sidenav.layout.html" %}
+            <div class="layout-container">
+                {% include "layouts/app-header.layout.html" %}
+            
+                <div class="layout-content">
+                 <div class="container-fluid d-flex flex-column flex-grow-1 container-p-y">
+                 {% include "layouts/app-messages.html" %}
+                    {% block app-content %}{% endblock %}
+                 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

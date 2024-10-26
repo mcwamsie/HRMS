@@ -1,0 +1,26 @@
+{% load static %}
+<nav class="layout-navbar navbar align-items-center justify-content-between bg-white container-p-x"
+     id="layout-navbar">
+    <div class="layout-sidenav-toggle navbar-nav d-lg-none align-items-lg-center">
+        <a class="nav-item nav-link px-0 mr-lg-4" href="javascript:">
+            <i class="fas fa-bars text-large align-middle"></i>
+        </a>
+    </div>
+
+    <!-- Brand demo (see assets/css/demo/demo.css) -->
+    <a href="{% url 'app_dashboard' %}" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
+        <div class="app-brand-logo demo">
+            <img src="{% static "assets/img/logo-dark.png" %}" alt="Brand Logo" class="img-fluid">
+        </div>
+        <span class="app-brand-text demo font-weight-bold ml-2">Job Portal</span>
+    </a>
+    <div class=" d-flex align-items-center ml-lg-auto">
+        {% include "layouts/includes/notification-dropdown.html" %}
+        <!-- Divider -->
+        <div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">
+            |
+        </div>
+        {% include "layouts/includes/user-dropdown.html" %}
+    </div>
+</nav>
+                

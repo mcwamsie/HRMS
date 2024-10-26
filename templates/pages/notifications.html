@@ -1,0 +1,14 @@
+{% extends "layouts/app.layout.html" %}
+
+{% block app-content %}
+    {% include "includes/notifications_list/header.html" %}
+    <div class="card">
+{#        {% include "includes/notifications_list/filter-items.html" %}#}
+        {% include "includes/notifications_list/table.html" %}
+    </div>
+    {% if page_obj %}
+        <div class="mt-4">
+    	{% include "components/datatables/pagination.html" %}
+        </div>
+    {% endif %} 
+{% endblock %}

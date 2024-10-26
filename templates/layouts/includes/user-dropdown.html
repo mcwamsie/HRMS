@@ -1,0 +1,33 @@
+{% load static random_color %}
+<div class="demo-navbar-user nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                <div class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
+                    {% if request.user.profilePhoto %}
+                    	 <img src="{{ request.user.profilePhoto.url }}" alt
+                         class="d-block ui-w-30 rounded-circle">
+                   {% else %}
+                        <div class="d-flex align-items-center justify-content-center ui-w-30 rounded-circle {% random_user_color %} text-white">
+                        {{ request.user.first_name | first  }}
+                        </div>
+                    {% endif %}
+                    <span class="px-1 text-dark font-weight-bold mr-lg-2 ml-2 ml-lg-0 d-none d-md-inline">
+                        {{ request.user | title }}
+                    </span>
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="{% url 'app_dashboard' %}" class="dropdown-item">
+                    <i class="fas fa-home text-muted"></i> Dashboard
+                </a>
+                
+                <a href="{% url 'app_profile' %}" class="dropdown-item">
+                    <i class="fas fa-user text-muted"></i> &nbsp; My profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <button type="button" onclick="document.getElementById('logout-form').submit()" class="dropdown-item">
+                    <i class="fas fa-power-off text-danger"></i> &nbsp;
+                    <span>Log Out</span>
+                </button>
+                <form id="logout-form" action="{% url "logout" %}" method="post">{% csrf_token %}</form>
+            </div>
+        </div>

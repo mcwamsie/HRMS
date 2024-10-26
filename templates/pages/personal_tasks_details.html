@@ -1,0 +1,141 @@
+{% extends "layouts/app.layout.html" %}
+
+{% block app-content %}
+    {% include "includes/personal_tasks_details/header.html" %}
+    <div class="card flex-grow-1">
+        <div class="card-body">
+            <div class="row mb-4 justify-content-between">
+                <div class="col-12 col-md-6 mb-4 mb-md-0">
+                    <h5 class="font-weight-bold mb-2">
+                        {{ object.task.name | title }}
+                    </h5>
+                    {% if object.task.description %}
+
+                        <p class="mb-4 text-wrap">{{ object.task.description }}</p>
+                    {% endif %}
+                    {% if object.task.document_name %}
+                        <a target="_blank" href="{{ object.task.document_name.url }}"
+                           class="btn borderless text-capitalize btn-outline-primary mb-4 text-wrap">
+                            <i class="fas fa-download"></i>
+                            <span>Instruction Document</span>
+                        </a>
+                    {% endif %}
+                    <div class="col-12 col-md-12 mb-2">
+                        <span class="font-weight-bold">Task Type:</span>
+                        <span class="font-weight-normal">{{ object.task.get_task_type_display | title }}</span>
+                    </div>
+                    <div class="col-12 col-md-12 mb-2">
+                        <span class="font-weight-bold">Onboarding Stage:</span>
+                        <span class="font-weight-normal">{{ object.task.get_stage_display | title }}</span>
+                    </div>
+                    <div class="col-12 col-md-12 mb-2">
+                        <span class="font-weight-bold">Created By:</span>
+                        <span class="font-weight-normal">{{ object.task.created_by | title }}</span>
+                    </div>
+                    <div class="col-12 col-md-12 mb-2">
+                        <span class="font-weight-bold">Status:</span>
+                        <span class="font-weight-normal">{{ object.get_status_display | title }}</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    {% if personal %}
+
+                        {% if object.task.task_type == "file" %}
+                            {% if object.status == "Pending" %}
+                                <h6 class="font-weight-bold mb-4">File upload</h6>
+                                <form enctype="multipart/form-data" novalidate method="post">
+                                    {% csrf_token %}
+                                    {% if form.non_field_errors %}
+                                        {% include "components/forms/error.html" with error=form.non_field_errors %}
+                                    {% endif %}
+                                    {% include "components/forms/field.html" with field=form.file_name %}
+                                    {% include "components/forms/field.html" with field=form.file %}
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            {% else %}
+
+                                {% if object.status == "Submitted" %}
+                                    <p>Document is submitted waiting approval from Human Resource department</p>
+                                {% endif %}
+
+                                <div class=" mb-2">
+                                    <span class="font-weight-bold">Submitted By:</span>
+                                    <span class="font-weight-normal">{{ object.assigned_to | title }}</span>
+                                </div>
+                                <div class=" mb-2">
+                                    <span class="font-weight-bold">Submitted:</span>
+                                    <span class="font-weight-normal">{{ object.createdAt | timesince }} Ago</span>
+                                </div>
+
+                                <div class="d-flex gap-4 mt-4">
+                                    {% if object.file %}
+                                        <a href="{{ object.file.url }}" target="_blank"
+                                           class="btn text-capitalize btn-secondary font-weight-normal">
+                                            <i class="fas fa-download mr-1"></i>
+                                            <span>{{ object.file_name | truncatechars:20 | title }}</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+
+                            {% endif %}
+
+                        {% endif %}
+
+                    {% else %}
+                        {% if object.task.task_type == "file" %}
+                            <h5 class="font-weight-bold">Document Submitted</h5>
+                            <div class=" mb-2">
+                                <span class="font-weight-bold">Submitted By:</span>
+                                <span class="font-weight-normal">{{ object.assigned_to | title }}</span>
+                            </div>
+                            <div class=" mb-2">
+                                <span class="font-weight-bold">Submitted:</span>
+                                <span class="font-weight-normal">{{ object.createdAt | timesince }} Ago</span>
+                            </div>
+
+                            {% if object.status == "Submitted" or object.status == "Done" %}
+                                <div class="d-flex gap-4 mt-4">
+                                    {% if object.file %}
+                                        <a href="{{ object.file.url }}" target="_blank"
+                                           class="btn text-capitalize btn-secondary font-weight-normal">
+                                            <i class="fas fa-download mr-1"></i>
+                                            <span>{{ object.file_name | truncatechars:20 | title }}</span>
+                                        </a>
+                                    {% endif %}
+
+                                    {% if  object.status == "Submitted" %}
+                                        <form method="post" novalidate>
+                                            {% csrf_token %} <input name="status" type="hidden" value="Done">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-check mr-1"></i>
+                                                <span>Approve</span>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+
+                            {% endif %}
+                        {% else %}
+                            {% if object.status != "Done" %}
+                                <form class="d-flex justify-content-end" method="post" novalidate>
+                                    {% csrf_token %} <input name="status" type="hidden" value="Done">
+                                    <button {% if object.due_date > now %}disabled=""{% endif %} class="btn btn-primary"
+                                            type="submit">
+                                        <i class="fas fa-check mr-1"></i>
+                                        <span>Approve</span>
+                                    </button>
+                                    
+                                </form>
+                            {% endif %}
+
+
+                        {% endif %}
+
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

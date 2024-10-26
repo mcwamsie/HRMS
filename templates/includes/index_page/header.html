@@ -1,0 +1,27 @@
+{% load static %}
+<nav class="layout-navbar navbar navbar-fixed-top navbar-expand-lg align-items-lg-center bg-white container-p-x"
+     id="layout-navbar">
+{#    <button class="navbar-toggler" type="button" data-toggle="collapse"#}
+{#            data-target="#layout-navbar-collapse">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#    </button>#}
+    <!-- Brand demo (see assets/css/demo/demo.css) -->
+    <a href="{% url 'index' %}" class="navbar-brand app-brand demo py-0 mr-4">
+        <div class="d-inline app-brand-logo demo">
+            <img src="{% static 'assets/img/logo-dark.png' %}" alt="Brand Logo" class="img-fluid">
+        </div>
+        <span class="app-brand-text demo font-weight-bold ml-2">Job Portal</span>
+    </a>
+
+
+    <div class="d-flex align-items-center ml-auto">
+        {% if request.user.is_authenticated %}
+            {% include "layouts/includes/user-dropdown.html" %}
+        {% else %}
+            <a href="{% url "login" %}" class="btn btn-primary px-5">
+                Sign in
+            </a>
+        {% endif %}
+
+    </div>
+</nav>

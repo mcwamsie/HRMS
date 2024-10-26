@@ -1,0 +1,83 @@
+{% extends "layouts/app.layout.html" %}
+
+{% block styles %}
+    <style>
+        .progress-step {
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            color: var(--primary);
+        }
+
+        .progress-step.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .progress {
+            height: 12px;
+            background-color: white;
+            width: 100%;
+            border: 1px solid #f1f1f1;
+        }
+    </style>
+{% endblock %}
+{% block app-content %}
+    {% include "includes/task_personal_list/header.html" %}
+    {% if personal %}
+    	<div class="mb-4">
+    <div class="d-flex align-items-center mb-3">
+        <div class="progress-step shadow-lg {% if request.user.pre_onboarding_percentage == 100 %}
+        	active
+        {% endif %} ">✔</div>
+        <div class="progress">
+            <div class="progress-bar" style="width: {{ request.user.pre_onboarding_percentage }}%;">
+                {{ request.user.pre_onboarding_percentage }}%
+            </div>
+        </div>
+        <div class="progress-step shadow-lg {% if request.user.onboarding_percentage == 100 %}
+        	active
+        {% endif %}">✔</div>
+        <div class="progress">
+            <div class="progress-bar" style="width: {{ request.user.onboarding_percentage }}%;">
+                {{ request.user.onboarding_percentage }}%
+            </div>
+        </div>
+        <div class="progress-step shadow-lg {% if request.user.complete_onboarding_percentage == 100 %}
+        	active
+        {% endif %}">✔</div>
+    </div>
+    <div class="d-sm-flex d-none align-items-start justify-content-between">
+        <div>
+            <h5 class="text-secondary mb-0">Pre-Onboarding</h5>
+            <p class="small mb-0 font-weight-bold">12/10/2024</p>
+        </div>
+         <div class="text-center">
+            <h5 class="text-secondary  mb-0">Onboarding</h5>
+            <p class="small mb-0 font-weight-bold">12/10/2024</p>
+        </div>
+        <div class="text-right">
+            <h5 class="text-secondary mb-0">Post-Onboarding</h5>
+            <p class="small mb-0 font-weight-bold">12/10/2024</p>
+        </div>
+    </div>
+    </div>
+    {% endif %} 
+    
+
+    <div class="card">
+        {% include "includes/task_personal_list/filter-items.html" %}
+        {% include "includes/task_personal_list/table.html" %}
+    </div>
+    {% if page_obj %}
+        <div class="mt-4">
+            {% include "components/datatables/pagination.html" %}
+        </div>
+    {% endif %}
+{% endblock %}

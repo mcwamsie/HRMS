@@ -1,0 +1,72 @@
+{% load misc %}
+{% load age_filters %}
+{% load urlparams %}
+<div class="col-12 mb-4 mb-lg-0 order-1 order-lg-2 col-md d-flex">
+    <div class="card flex-grow-1">
+        <div class="card-header position-relative">
+            <a href="{% url_params_add job_offering=None %}" class="btn close">
+                <i class="fas fa-times"></i>
+            </a>
+            <div class="d-flex mb-2 align-items-center gap-4">
+                <h4 class="font-weight-bold mb-0">
+                    {{ job_offering.position | title }}
+                </h4>
+                <button class="btn text-dark">
+                    <i class="fas fa-"></i>
+                </button>
+            </div>
+            <a href="{% url "application_create" pk=job_offering.id %}" class="btn btn-primary px-5">
+                Apply
+            </a>
+
+        </div>
+        <div class="card-body">
+            <div class="d-flex gap-8 flex-column flex-md-row mb-4">
+                <div class="d-flex gap-4 align-items-start mb-2">
+                    <i class="fas fa-map-marker text-light "></i>
+                <div>
+                   {% for location in job_offering.locations.all %}
+                            <span class="d-block font-weight-bold">{{ location | title }}</span>
+                        {% endfor %}  
+                </div>
+                  
+                 
+                </div>
+                <div>
+                     <div class="d-flex gap-4 align-items-center mb-2">
+                        <i class="fas fa-briefcase text-light "></i>
+                        <span class="font-weight-semibold">{{ job_offering.get_type_display  }}</span>
+                    </div>
+                    <div class="d-flex gap-4 align-items-center mb-2">
+                        <i class="fas fa-clock text-light"></i>
+                        <p class="mb-0">
+                            <span class="mr-1">Posted</span>
+                            <span class="font-weight-bold">
+                        {{ job_offering.publish_date | relative_time | concat:" Ago" }}
+                    </span>
+                        </p>
+                    </div>
+                    <div class="d-flex gap-4 align-items-center mb-2">
+                        <i class="fas fa-hashtag text-light "></i>
+                        <span class="font-weight-bold">{{ job_offering.job_id | upper }}</span>
+                    </div>
+                   
+                </div>
+
+            </div>
+            <p style="white-space: pre-wrap">{{ job_offering.description }}</p>
+            <div class="flex flex-column gap-1">
+                <span class="d-block font-weight-bold">Closing Date</span>
+                <span class="d-block">{{ job_offering.due_date |date:"M d, Y, H:i" }}</span>
+            </div> 
+        {% if job_offering.required_documents.count %}
+        	<div class="flex flex-column gap-1 mt-4">
+                <span class="d-block font-weight-bold">Required Documents</span>
+                <span class="d-block">{{ job_offering.required_documents.all |join:", " |title }}</span>
+            </div>
+        {% endif %} 
+            
+        </div>
+
+    </div>
+</div>

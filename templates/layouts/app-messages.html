@@ -1,0 +1,8 @@
+{% if messages %}
+    
+    {% for message in messages %}
+{#            notification['{{ message.tags }}']("{{ message|capfirst }}");#}
+        {% include "layouts/includes/message-items.html" %}
+        {% endfor %}
+    
+{% endif %}

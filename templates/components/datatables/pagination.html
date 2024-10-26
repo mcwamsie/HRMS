@@ -1,0 +1,46 @@
+{% load urlparams %}
+<div class="d-flex justify-content-between align-items-center gap-4 px-4 pb-2">
+<div class="text-sm font-normal">
+                    Showing
+                    <span class="font-weight-semibold">
+                        {{ page_obj.start_index }}-{{ page_obj.end_index }}
+                    </span>
+                    of
+                    <span class="font-weight-semibold">
+                      {{ total }}
+                    </span>
+                </div>
+    <nav>
+        <ul class="pagination mb-0">
+            {% if page_obj.has_previous %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="{% url_params_add page=page_obj.previous_page_number %}">«</a>
+                </li>
+            {% endif %}
+            {% for page in page_obj.paginator.page_range %}
+                {% if page == page_obj.number %}
+                    <li class="page-item active">
+                        <a class="page-link" href="javascript:void(0)">{{ page }}</a>
+                    </li>
+                {% elif page >= page_obj.number|add:-1 and page <= page_obj.number|add:1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url_params_add page=page %}">{{ page }}</a>
+                    </li>
+                {% elif page == 1 or page == page_obj.paginator.num_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url_params_add page=page %}">{{ page }}</a>
+                    </li>
+                {% elif page == page_obj.number|add:-2 or page == page_obj.number|add:2 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url_params_add page=page %}">---</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url_params_add page=page_obj.next_page_number %}">»</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>

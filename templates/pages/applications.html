@@ -1,0 +1,10 @@
+{% extends "layouts/app.layout.html" %}
+
+{% block app-content %}
+    {% include "includes/application_list/header.html" %}
+    <div class="card">
+        {% include "includes/application_list/filter-items.html" %}
+        {% include "includes/application_list/table.html" %}
+       
+    </div>
+{% endblock %}

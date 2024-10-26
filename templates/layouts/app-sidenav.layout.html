@@ -1,0 +1,87 @@
+{% load static active_class_tags %}
+<div id="layout-sidenav" class="layout-sidenav sidenav sidenav-vertical bg-dark">
+    <!-- Brand demo (see assets/css/demo/demo.css) -->
+    <div class="app-brand demo">
+                    <span class="app-brand-logo demo">
+                        <img src="{% static 'assets/img/logo.png' %}" alt="Brand Logo" class="img-fluid rounded-circle">
+                    </span>
+        <span class="app-brand-text demo sidenav-text font-weight-bold ml-2">
+            Job Portal</span>
+        <a href="javascript:" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
+            <i class="fas fa-bars align-middle"></i>
+        </a>
+    </div>
+    <div class="sidenav-divider mt-0"></div>
+
+    <ul class="sidenav-inner py-1">
+        <li class="sidenav-item {% active_class "app_dashboard" "active" "" %}">
+            <a href="{% url "app_dashboard" %}" class="sidenav-link">
+                <i class="sidenav-icon fas fa-home"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+        <li class="sidenav-divider mb-1"></li>
+        <li class="sidenav-header small font-weight-semibold">Personal Information</li>
+        <li class="sidenav-item {% active_class "app_profile" "active" "" %}">
+            <a href="{% url "app_profile" %}" class="sidenav-link">
+                <i class="sidenav-icon fas fa-user-circle"></i>
+                <div>Profile</div>
+            </a>
+        </li>
+
+        {#        <li class="sidenav-item {% active_class "app_application_list" "active" "" %}">#}
+        {#            <a href="{% url "app_application_list" %}" class="sidenav-link">#}
+        {#                <i class="sidenav-icon fas fa-box"></i>#}
+        {#                <div>Job Applications</div>#}
+        {#            </a>#}
+        {#        </li>#}
+        {% if  request.user.role != "APPLICANT" %}
+            <li class="sidenav-item {% active_class "app_tasks_personal_list" "active" "" %}">
+                <a href="{% url "app_tasks_personal_list" %}" class="sidenav-link">
+                    <i class="sidenav-icon fas fa-wrench"></i>
+                    <div>Personal Tasks</div>
+                </a>
+            </li>
+        {% endif %}
+        <li class="sidenav-item {% active_class "app_notifications" "active" "" %}">
+            <a href="{% url "app_notifications" %}" class="sidenav-link">
+                <i class="sidenav-icon fas fa-bell"></i>
+                <div>Notifications</div>
+            </a>
+        </li>
+
+        {% if request.user.role == "HR OFFICER" or request.user.role ==  "ADMIN" %}
+            <li class="sidenav-divider mb-1"></li>
+            <li class="sidenav-header small font-weight-semibold">Human Resource Management</li>
+            {#            <li class="sidenav-item {% active_class "app_job_offerings_list" "active" "" %}">#}
+            {#                <a href="{% url "app_job_offerings_list" %}" class="sidenav-link">#}
+            {#                    <i class="sidenav-icon fas fa-box"></i>#}
+            {#                    <div>Job Offering</div>#}
+            {#                </a>#}
+            {#            </li>#}
+            <li class="sidenav-item {% active_class "app_employees_list" "active" "" %}">
+                <a href="{% url "app_employees_list" %}" class="sidenav-link">
+                    <i class="sidenav-icon fas fa-users"></i>
+                    <div>Employees</div>
+                </a>
+            </li>
+            <li class="sidenav-item {% active_class "app_tasks_list" "active" "" %}">
+                <a href="{% url "app_tasks_list" %}" class="sidenav-link">
+                    <i class="sidenav-icon fas fa-wrench"></i>
+                    <div>Tasks</div>
+                </a>
+            </li>
+
+        {% endif %}
+        <li class="sidenav-divider mb-1"></li>
+        <li class="sidenav-header small font-weight-semibold">Support</li>
+
+        <li class="sidenav-item {% active_class "app_personal_surveys_list" "active" "" %}">
+            <a href="{% url "app_personal_surveys_list" %}" class="sidenav-link">
+                <i class="sidenav-icon fas fa-anchor"></i>
+                <div>Survey</div>
+            </a>
+        </li>
+    </ul>
+</div>
+            

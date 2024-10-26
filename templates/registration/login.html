@@ -1,0 +1,45 @@
+{% extends "layouts/auth.layout.html" %}
+{% load static %}
+
+{% block auth-content %}
+    <!-- [ Logo ] Start -->
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <div class="ui-w-60">
+            <div class="w-100 position-relative">
+                <img src="{% static 'assets/img/logo-dark.png' %}" alt="Brand Logo" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+    	{% include "components/forms/error.html" with error=form.non_field_errors %}
+    {% endif %} 
+
+    <!-- [ Form ] Start -->
+    <form class="my-4" novalidate method="post">
+        {% csrf_token %}
+        {% include "components/forms/field.html" with field=form.username %}
+        <div class="form-group align-items-end d-flex flex-column gap-1">
+            {% include "components/forms/field.html" with field=form.password css_classes="mb-0 w-100" %}
+           <a href="{% url "password_reset" %}" class="d-block small mt-2 font-weight-bold">Forgot password?</a>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <label class="custom-control custom-checkbox m-0">
+                <input type="checkbox" class="custom-control-input">
+                <span class="custom-control-label">Remember me</span>
+            </label>
+        </div>
+     <button type="submit" class="btn btn-primary w-100">Sign In</button>
+    </form>
+    <!-- [ Form ] End -->
+
+    <div class="text-center text-muted">
+        Don't have an account yet?
+        {% if request.GET.next %}
+        	<a href="{% url "register" %}?next={{ request.GET.next }}">Sign Up</a>
+            {% else %}
+            <a href="{% url "register" %} ">Sign Up</a>
+        {% endif %}
+        
+    </div>
+
+{% endblock %}

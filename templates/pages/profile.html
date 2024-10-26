@@ -1,0 +1,182 @@
+{% extends "layouts/app.layout.html" %}
+{% load random_color %}
+{% block app-content %}
+    <div class="row">
+        <div class="col-md-12 m-b-30">
+            <!-- begin page title -->
+            <div class="d-block d-sm-flex flex-nowrap align-items-center">
+                <div class="page-title mb-2 mb-sm-0">
+                    <h3 class="font-weight-bold">User Profile</h3>
+                </div>
+                <div class="ml-auto d-flex align-items-center">
+                    <nav>
+                        <ol class="breadcrumb p-0 m-b-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'app_dashboard' %}"><i class="fas fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                Dashboard
+                            </li>
+                            <li class="breadcrumb-item active font-weight-bold text-primary" aria-current="page">Profile
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!-- end page title -->
+        </div>
+    </div>
+
+    <div class="row account-contant">
+        <div class="col-12">
+            <div class="card card-statistics">
+                <div class="card-body p-0">
+                    <div class="row no-gutters">
+                        <div class="col-12 col-xl-3 pb-xl-0 pb-5 border-right">
+                            <div class="page-account-profile pt-5">
+                                <div class="profile-img text-center rounded-circle">
+                                    <div class="pt-5 d-flex flex-column">
+                                        <div class=" m-auto">
+                                            {% if request.user.profilePhoto %}
+                                                <img src="{{ request.user.profilePhoto.url }}"
+                                                     class="img-fluid ui-w-100 rounded-circle" alt="users-avatar">
+                                            {% else %}
+                                                <div style="font-size: 24px"
+                                                     class="{% random_user_color %} font-weight-bold text-white ui-w-100 rounded-circle d-flex align-items-center  justify-content-center">
+                                                    {{ request.user.first_name | first }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="profile pt-4">
+                                            <h4 class="mb-1">
+                                                {{ request.user | title }}
+                                            </h4>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-btn text-center">
+                                    <div>
+                                        <button class="btn btn-light text-primary mb-2">Upload New Avatar</button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-5 col-md-6 col-12 border-t border-right">
+                            <div class="page-account-form">
+                                <div class="p-4">
+                                    <div class="form-row">
+                                        <div class="col-12 bg-secondary-dark p-2 text-white col-md-12 mb-4">
+                                            <p class="font-weight-bold mb-0">Personal Information</p>
+                                        </div>
+                                        <div class="col-12 col-md-12 mb-2">
+                                            <span class="font-weight-bold">Full Name:</span>
+                                            <span class="font-weight-normal">{{ request.user | title }}</span>
+                                        </div>
+                                        <div class="col-12 col-md-12 mb-2">
+                                            <span class="font-weight-bold">National ID No:</span>
+                                            <span class="font-weight-normal">{{ request.user.nationalIdNo | upper }}</span>
+                                        </div>
+                                        <div class="col-12 col-md-12 mb-2">
+                                            <span class="font-weight-bold">Sex:</span>
+                                            <span class="font-weight-normal">{{ request.user.get_sex_display | title }}</span>
+                                        </div>
+                                        <div class="col-12 col-md-12 mb-2">
+                                            <span class="font-weight-bold">Date Of Birth:</span>
+                                            <span class="font-weight-normal">{{ request.user.date_of_birth | date:"d M, Y" }}</span>
+                                        </div>
+                                        <div class="col-12 bg-secondary-dark p-2 text-white col-md-12 my-4">
+                                            <p class="font-weight-bold mb-0">Contact Information</p>
+                                        </div>
+                                        <div class="col-12 col-md-12 mb-2">
+                                            <span class="font-weight-bold">Email:</span>
+                                            <a href="mailto:{{ request.user.email }}"
+                                               class="text-primary font-weight-normal">{{ request.user.email }}</a>
+                                        </div>
+                                        <div class="col-12 col-md-12 mb-2">
+                                            <span class="font-weight-bold">Phone Number:</span>
+                                            <a href="tel:{{ request.user.phone }}"
+                                               class="text-primary font-weight-normal">{{ request.user.phone }}</a>
+                                        </div>
+                                        {% if  request.user.address %}
+                                            <div class="col-12 col-md-12 mb-2">
+                                                <p class="font-weight-bold mb-0">Address:</p>
+                                                <p class="text-wrap font-weight-normal">{{ request.user.address }}</p>
+                                            </div>
+                                            
+                                        {% endif %}
+                                        {% if request.user.active_assignment %}
+                                            <div class="col-12 bg-secondary-dark p-2 text-white col-md-12 my-4">
+                                            <p class="font-weight-bold mb-0">Employment Information</p>
+                                        </div>
+                                            <div class="col-12 col-md-12 mb-2">
+                                                <span class="font-weight-bold">Title:</span>
+                                                <span class="font-weight-normal">{{ request.user.active_assignment.position.name | title }}</span>
+                                            </div>
+                                            <div class="col-12 col-md-12 mb-2">
+                                                <span class="font-weight-bold">Department:</span>
+                                                <span class="font-weight-normal">{{ request.user.active_assignment.position.department | title }}</span>
+                                            </div>
+                                             <div class="col-12 col-md-12 mb-2">
+                                                <span class="font-weight-bold">Type:</span>
+                                                <span class="font-weight-normal">{{ request.user.active_assignment.get_type_display | title }}</span>
+                                            </div>
+                                            <div class="col-12 col-md-12 mb-2">
+                                                <span class="font-weight-bold">Start Date:</span>
+                                                <span class="font-weight-normal">{{ request.user.active_assignment.start_date | date:"d M, Y H:i" }}</span>
+                                            </div>
+                                            {% if  request.user.active_assignment.end_date %}
+                                            	<div class="col-12 col-md-12 mb-2">
+                                                <span class="font-weight-bold">End Date:</span>
+                                                <span class="font-weight-normal">{{ request.user.active_assignment.end_date | date:"d M, Y H:i" }}</span>
+                                            </div>
+                                            {% endif %} 
+                                        {% else %}
+                                            <div class="col-12 col-md-12 mb-4">
+                                                <span class="font-weight-bold">Title:</span>
+                                                <span class="font-weight-normal">Unassigned</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>s
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 border-t col-12">
+                            <div class="page-account-form">
+                                <div class="form-titel border-bottom p-3">
+                                    <h5 class="mb-0 py-2">Your External Link</h5>
+                                </div>
+                                <div class="p-4">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="fb">Facebook URL:</label>
+                                            <input type="text" class="form-control" id="fb"
+                                                   value="https://www.facebook.com/">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tr">Twitter URL:</label>
+                                            <input type="text" class="form-control" id="tr"
+                                                   value="https://twitter.com/">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="li">LinkedIn URL:</label>
+                                            <input type="text" class="form-control" id="li"
+                                                   value="https://in.linkedin.com/">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save &amp; Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--mail-Compose-contant-end-->
+
+{% endblock %}

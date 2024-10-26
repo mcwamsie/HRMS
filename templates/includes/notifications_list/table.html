@@ -1,0 +1,55 @@
+{% if object_list.count %}
+    <div class="table-responsive mb-4">
+        <table class="table card-table table-sm">
+            <tbody>
+            {% for notification in object_list %}
+                <tr>
+                    <td>
+                      {% if notification.data.link %}
+                            <a href="{{ notification.data.link }}?from_notification={{ notification.id }}"
+                               class="list-group-item list-group-item-action media d-flex align-items-center border-0">
+                                <div class="ui-icon ui-icon-sm feather bg-{{ notification.get_level_display | lower }} border-0 text-white">
+                                    <i class="{{ notification.data.icon }}"></i>
+                                </div>
+                                <div class="media-body line-height-condenced ml-3">
+                                    <div class="text-dark {% if notification.unread %}font-weight-bold{% endif %} ">{{ notification.subject }}</div>
+                                    <div class="text-light small mt-1">
+                                        {{ notification.description | title }}
+                                    </div>
+                                    <div class="text-light small mt-1">{{ notification.timesince }} ago</div>
+                                </div>
+                                {% if notification.unread %}
+                                	<i class="ml-auto fas fa-envelope text-primary"></i>
+                                    {% else %}
+                                	<i class="ml-auto fas fa-envelope-open text-secondary"></i>
+                                    
+                                {% endif %} 
+                                
+                            </a>
+                        {% else %}
+                            <div class="list-group-item list-group-item-action media d-flex align-items-center">
+                                <div class="ui-icon ui-icon-sm feather bg-{{ notification.get_level_display | lower }} border-0 text-white">
+                                    <i class="{{ notification.data.icon }}"></i>
+                                </div>
+                                <div class="media-body line-height-condenced ml-3">
+                                    <div class="text-dark">{{ notification.subject }}</div>
+                                    <div class="text-light small mt-1">
+                                        {{ notification.description| title }}
+                                    </div>
+                                    <div class="text-light small mt-1">{{ notification.timesince }} ago</div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                       
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    {% include "layouts/includes/empty-datatable.html" %}
+{% endif %}  
+

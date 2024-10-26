@@ -1,0 +1,12 @@
+{% extends "layouts/base.layout.html" %}
+{% block content %}
+<div class="authentication-wrapper authentication-1 w-100 h-100 py-5 px-4 d-flex align-items-center justify-content-center">
+    <div style="{% if larger %}
+    	max-width: 800px;
+        {% else %}
+    	max-width: 400px;
+    {% endif %} " class="authentication-inner w-100  bg-white p-4">
+        {% block auth-content %}{% endblock %}
+    </div>
+</div>	
+{% endblock %}

@@ -1,0 +1,46 @@
+{% load urlparams %}
+{% load misc %}
+{% load age_filters %}
+<li style="{% if job_offering == object %}
+    background-color: var(--light);
+    border: 2px var(--primary) solid
+    {% else %}
+	border-bottom: 1px var(--light) solid
+{% endif %} " class="px-4 py-3">
+    <div class="css-qiqmbt">
+        <div class="css-b3pn3b">
+            <div class="css-b3pn3b">
+                <h5>
+                    <a aria-current="false"
+                       href="{% url_params_add job_offering=object.id %}">
+                        {{ object.position.name }}
+                    </a>
+                </h5>
+            </div>
+
+            <div class="d-flex gap-4 align-items-center mb-2">
+                <i class="fas fa-map-marker text-light "></i>
+                {% if object.locations.count > 1 %}
+                    <span class="font-weight-bold">{{ object.locations.count }} Locations</span>
+                {% else %}
+                    {% for location in object.locations.all %}
+                        <span class="font-weight-bold">{{ location | title }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="d-flex gap-4 align-items-center mb-2">
+                <i class="fas fa-clock text-light"></i>
+                <p class="mb-0">
+                    <span class="mr-1">Posted</span>
+                    <span class="font-weight-bold">
+                        {{ object.publish_date | relative_time | concat:" Ago" }}
+                    </span>
+                </p>
+            </div>
+            <div class="d-flex gap-4 align-items-center mb-2">
+                <i class="fas fa-hashtag text-light "></i>
+                <span class="font-weight-bold">{{ object.job_id | upper }}</span>
+            </div>
+        </div>
+    </div>
+</li>

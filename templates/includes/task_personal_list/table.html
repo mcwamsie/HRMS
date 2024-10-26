@@ -1,0 +1,72 @@
+{% if object_list.count %}
+    <div class="table-responsive mb-4">
+        <table class="table card-table">
+            <thead class="thead-light">
+            <tr>
+                <th></th>
+                {% if not personal %}
+                    <th>Assigned To</th>
+                {% endif %}
+                <th>Name</th>
+                <th>Type</th>
+                <th>Stage</th>
+                <th>Done</th>
+                <th>Assigned At</th>
+                <th>Due At</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for task in object_list %}
+                <tr>
+                    <th scope="row">
+                        {% if personal %}
+                            <a href="{% url 'app_tasks_personal_details' pk=task.id %}"
+                               class="btn btn-outline-info borderless w-auto">
+                                <span class="fas fa-edit"></span>
+                                <span class="font-weight-bold ml-1 text-capitalize">Edit</span>
+                            </a>
+
+                        {% else %}
+                            <a href="{% url 'app_tasks_details' pk=task.id %}"
+                               class="btn btn-outline-info borderless w-auto">
+                                <span class="fas fa-edit"></span>
+                                <span class="font-weight-bold ml-1 text-capitalize">Edit</span>
+                            </a>
+                        
+                        {% endif %}
+
+
+                    </th>
+                    {% if not personal %}
+                        <td>{{ task.assigned_to | title }}</td>
+                    {% endif %}
+                    <td>{{ task.task.name | title }}</td>
+                    <td>{{ task.task.get_task_type_display }}</td>
+                    <td>{{ task.task.get_stage_display }}</td>
+                    <th scope="row">
+                        {% if task.status == "Done" %}
+                            <div style="height: 16px; width: 16px"
+                                 class="d-inline-flex  p-1 small text-white bg-success  rounded-circle justify-content-center align-items-center">
+                                <i style="font-size: 10px" class="fas fa-minus"></i>
+                            </div>
+                            {{ task.get_status_display }}
+                        {% else %}
+                            <div style="height: 16px; width: 16px"
+                                 class="d-inline-flex  p-1 small text-white bg-secondary  rounded-circle justify-content-center align-items-center">
+                                <i style="font-size: 10px" class="fas fa-minus"></i>
+                            </div>
+                            {{ task.get_status_display }}
+                        {% endif %}
+                    </th>
+                    <td>{{ task.createdAt | date:"d M, Y H:i" }}</td>
+                    <td>{{ task.due_date | date:"d M, Y H:i" }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    {% include "layouts/includes/empty-datatable.html" %}
+{% endif %}  
+

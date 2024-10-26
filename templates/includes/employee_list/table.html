@@ -1,0 +1,53 @@
+{% if object_list.count %}
+    <div class="table-responsive mb-4">
+        <table class="table card-table table-sm">
+            <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Position</th>
+                <th>Department</th>
+                <th>Date Joined</th>
+                <th>Status</th>
+                <th>Tasks (Done/Total)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'app_employees_details' pk=object.id %}"
+                           class="btn btn-outline-info borderless w-auto">
+                            <span class="fas fa-edit"></span>
+                            <span class="font-weight-bold ml-1 text-capitalize">Edit</span>
+                        </a>
+                    </td>
+                    <th scope="row" class="text-right font-weight-bold">
+                        {{ object.employee_number }}
+                    </th>
+                    <td>{{ object | title | truncatechars:25 }}</td>
+                    {% if object.active_assignment %}
+                        <td>{{ object.active_assignment.position.name | title }}</td>
+                        <td>{{ object.active_assignment.position.department | title }}</td>
+                    {% else %}
+                        <td>---</td>
+                        <td>---</td>
+                    {% endif %}
+
+                    <td class="text-left">{{ object.date_joined | date:"M d, Y, H:i" }}</td>
+                    <td class="text-left">{{ object.employment_status }}</td>
+                    <td class="text-right">
+                        {{ object.assignments.done.count }}/
+                        {{ object.assignments.count }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    {% include "layouts/includes/empty-datatable.html" %}
+{% endif %}  
+

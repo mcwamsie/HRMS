@@ -1,0 +1,62 @@
+{% with request.user.notifications.unread.all as unread %}
+    <div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
+
+        <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">
+            <i class="fas fa-bell navbar-icon align-middle"></i>
+            {% if unread.count %}
+                <span class="badge badge-danger badge-dot indicator"></span>
+            {% endif %}
+
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px">
+            <div class="bg-primary text-center text-white font-weight-bold p-3">
+                {{ unread.count }} New Notifications
+            </div>
+            <div class="list-group list-group-flush">
+                {% if unread.count %}
+                    {% for notification in unread %}
+                        {% if notification.data.link %}
+                            <a href="{{ notification.data.link }}?from_notification={{ notification.id }}"
+                               class="list-group-item list-group-item-action media d-flex align-items-center">
+                                <div class="ui-icon ui-icon-sm feather bg-{{ notification.get_level_display | lower }} border-0 text-white">
+                                    <i class="{{ notification.data.icon }}"></i>
+                                </div>
+                                <div class="media-body line-height-condenced ml-3">
+                                    <div class="text-dark">{{ notification.subject }}</div>
+                                    <div class="text-light small mt-1">
+                                        {{ notification.description | truncatechars:30 | title }}
+                                    </div>
+                                    <div class="text-light small mt-1">{{ notification.timesince }} ago</div>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="list-group-item list-group-item-action media d-flex align-items-center">
+                                <div class="ui-icon ui-icon-sm feather bg-{{ notification.get_level_display | lower }} border-0 text-white">
+                                    <i class="{{ notification.data.icon }}"></i>
+                                </div>
+                                <div class="media-body line-height-condenced ml-3">
+                                    <div class="text-dark">{{ notification.subject }}</div>
+                                    <div class="text-light small mt-1">
+                                        {{ notification.description | truncatechars:30 | title }}
+                                    </div>
+                                    <div class="text-light small mt-1">{{ notification.timesince }} ago</div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                {% else %}
+                    <div style="min-height: 100px"
+                         class="d-flex gap-1 flex-column align-items-center justify-content-center">
+                        <i class="fas fa-bell-slash text-secondary fa-2x"></i>
+                        <span class="text-secondary">No New Notifications</span>
+                    </div>
+                {% endif %}
+            </div>
+            <a href="{% url "app_notifications" %}" class="d-block text-center text-light small p-2 my-1">
+                Show all notifications
+            </a>
+        </div>
+    </div>
+
+{% endwith %}

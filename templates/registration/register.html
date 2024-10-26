@@ -1,0 +1,79 @@
+{% extends "layouts/auth.layout.html" %}
+{% load static %}
+
+{% block auth-content %}
+    <!-- [ Logo ] Start -->
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <div class="ui-w-60">
+            <div class="w-100 position-relative">
+                <img src="{% static 'assets/img/logo-dark.png' %}" alt="Brand Logo" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+        {% include "components/forms/error.html" with error=form.non_field_errors %}
+    {% endif %}
+
+    <!-- [ Form ] Start -->
+    <form class="my-4" novalidate method="post">
+        {% csrf_token %}
+        <div class="row ">
+            <div class="col-12 col-sm-6">
+                {% include "components/forms/field.html" with field=form.username %}
+            </div>
+            <div class="col-12 col-sm-6">
+                {% include "components/forms/field.html" with field=form.nationalIdNo %}
+            </div>
+            
+            <div class="col-12 col-sm-6">
+                {% include "components/forms/field.html" with field=form.first_name %}
+        
+            </div>
+            <div class="col-12 col-sm-6">
+        {% include "components/forms/field.html" with field=form.last_name %}
+                
+            </div>
+            
+            <div class="col-12 col-sm-6">
+                  {% include "components/forms/field.html" with field=form.date_of_birth %}
+      
+            </div>
+            <div class="col-12 col-sm-6">
+        {% include "components/forms/field.html" with field=form.sex %}
+                
+            </div>
+            
+            <div class="col-12 col-sm-6">
+                 {% include "components/forms/field.html" with field=form.email %}
+       
+            </div>
+            <div class="col-12 col-sm-6">
+        {% include "components/forms/field.html" with field=form.phone %}
+                
+            </div>
+            
+            <div class="col-12 col-sm-6">
+                {% include "components/forms/field.html" with field=form.password1 %}
+       
+            </div>
+            <div class="col-12 col-sm-6">
+        {% include "components/forms/field.html" with field=form.password2 %}
+                
+            </div>
+        </div>
+        
+        
+        
+       
+        
+         
+        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+    </form>
+    <!-- [ Form ] End -->
+
+    <div class="text-center text-muted">
+        Already have an account?
+        <a href="{% url "login" %}">Sign In</a>
+    </div>
+
+{% endblock %}
