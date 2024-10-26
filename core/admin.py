@@ -65,7 +65,7 @@ class MemberAdmin(UserAdmin, ImportExportModelAdmin):
                 'email', 'password1', 'password2', 'first_name', 'last_name',
                 'sex',
                 'date_of_birth',
-                'phone_number',
+                'phone',
                 'sex', 'role',
                 'address_line_1',
                 'address_line_2'),
