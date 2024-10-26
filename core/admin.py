@@ -45,14 +45,15 @@ class MemberAdmin(UserAdmin, ImportExportModelAdmin):
     model = Employee
     ordering = ['last_name', "first_name"]
     list_filter = ('is_staff', 'is_active', "role")
-    readonly_fields = ('date_joined',)
+    readonly_fields = ('date_joined', 'employee_number')
     list_display = ('employee_number', 'nationalIdNo', 'first_name', 'last_name', 'email', 'date_of_birth', "role")
     search_fields = ('first_name', 'employee_number', 'last_name', 'email', 'nationalIdNo')
 
     fieldsets = (
         (None, {'fields': ('email', 'password', "username", 'role')}),
         ('Personal Info',
-         {'fields': ('profilePhoto', 'first_name', 'last_name', 'phone', 'sex', "address_line_1", 'address_line_2')}),
+         {'fields': (
+             'profilePhoto', "employee_number", "nationalIdNo", 'first_name', 'last_name', 'phone', 'sex', "address_line_1", 'address_line_2')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',)}),
         ('Important dates', {'fields': ['date_joined']}),
     )
@@ -63,6 +64,7 @@ class MemberAdmin(UserAdmin, ImportExportModelAdmin):
             'fields': (
                 'profilePhoto',
                 'username',
+                "nationalIdNo",
                 'email', 'password1', 'password2', 'first_name', 'last_name',
                 'sex',
                 'date_of_birth',
