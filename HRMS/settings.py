@@ -15,13 +15,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-nu)%h^l=u2vu99n3uj_pv-r^+))#yuaej^@5&3=xm*=-db#=ak'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'True'
 
 ALLOWED_HOSTS = ["*"]
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'e6c7-2c0f-f8f0-a34e-0-34fa-d41a-5071-d868.ngrok-free.app']
 #CSRF_TRUSTED_ORIGINS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['https://e6c7-2c0f-f8f0-a34e-0-34fa-d41a-5071-d868.ngrok-free.app']
-
 
 # Application definition
 
@@ -40,9 +39,9 @@ INSTALLED_APPS = [
     "simple_history",
     "import_export",
     "background_task",
-   # "notifications",
+    # "notifications",
 
-"core.apps.CoreConfig",
+    "core.apps.CoreConfig",
 ]
 
 MIDDLEWARE = [
@@ -159,22 +158,15 @@ PHONENUMBER_DEFAULT_REGION = "ZW"
 LOGIN_REDIRECT_URL = "/app/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
 
+PAGE_SIZE = 16
 
-PAGE_SIZE=16
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "True"
 
 
-if DEBUG:
-    #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-    EMAIL_HOST = os.getenv("MAIL_TRAP_EMAIL_HOST")
-    EMAIL_HOST_USER = os.getenv("MAIL_TRAP_EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = os.getenv("MAIL_TRAP_EMAIL_HOST_PASSWORD")
-    EMAIL_PORT = os.getenv("MAIL_TRAP_EMAIL_PORT")
-else:
-    # Looking to send emails in production? Check out our Email API/SMTP product!
-    EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-    EMAIL_HOST_USER = '59f576e94b8a5b'
-    EMAIL_HOST_PASSWORD = 'dda87d79a70d67'
-    EMAIL_PORT = '2525'
-
-DEFAULT_FROM_EMAIL="tmcwamsie@gmail.com"
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
