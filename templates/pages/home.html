@@ -2,88 +2,94 @@
 
 {% block app-content %}
     {% include "includes/homepage/header.html" %}
-    {% if tasks.count %}
-        <div class="card">
-            <div class="card-header py-2 font-weight-bold d-flex justify-content-between align-items-center">
-                Onboarding Tasks
-                <a href="{% url 'app_tasks_personal_list' %}"
-                   class="btn btn-outline-info borderless w-auto">
-                    <span class="font-weight-bold ml-1 text-capitalize">View All</span>
-                </a>
-            </div>
-            <div class="table-responsive" style="min-height: 200px">
-                <table class="table card-table">
-                    <thead class="thead-light">
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Stage</th>
-                        <th>Done</th>
-                        <th>Assigned At</th>
-                        <th>Due At</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for task in tasks %}
-                        <tr>
-                            <th scope="row">
-                                <a href="{% url 'app_tasks_personal_details' pk=task.id %}"
-                                   class="btn btn-outline-info borderless w-auto">
-                                    <span class="fas fa-edit"></span>
-                                    <span class="font-weight-bold ml-1 text-capitalize">Edit</span>
-                                </a>
-                                {#                                {% if task.status == "Pending" %}#}
-                                {##}
-                                {#                                    {% if task.task.task_type == "file" %}#}
-                                {#                                        <a href="{% url 'app_job_task_details' pk=task.id %}"#}
-                                {#                                           class="btn btn-outline-info borderless w-auto">#}
-                                {#                                            <span class="fas fa-upload"></span>#}
-                                {#                                            <span class="font-weight-bold ml-1 text-capitalize">Upload</span>#}
-                                {#                                        </a>#}
-                                {#                                    {% else %}#}
-                                {#                                        {% if task.due_date > now %}#}
-                                {#                                            <button disabled type="button"#}
-                                {#                                                    class="btn btn-outline-info borderless w-auto">#}
-                                {#                                                <span class="fas fa-chess-board"></span>#}
-                                {#                                                <span class="font-weight-bold ml-1 text-capitalize">Attend</span>#}
-                                {#                                            </button>#}
-                                {#                                        {% else %}#}
-                                {#                                            <a href="{% url 'app_job_offerings_details' pk=task.id %}"#}
-                                {#                                               class="btn btn-outline-info borderless w-auto">#}
-                                {#                                                <span class="fas fa-chess-board"></span>#}
-                                {#                                                <span class="font-weight-bold ml-1 text-capitalize">Attend</span>#}
-                                {#                                            </a>#}
-                                {#                                        {% endif %}#}
-                                {#                                    {% endif %}#}
-                                {#                                {% endif %}#}
-
-                            </th>
-                            <td>{{ task.task.name | title }}</td>
-                            <td>{{ task.task.get_task_type_display }}</td>
-                            <td>{{ task.task.get_stage_display }}</td>
-                            <th scope="row">
-                                {% if task.status == "Done" %}
-                                    <div style="height: 16px; width: 16px"
-                                         class="d-inline-flex  p-1 small text-white bg-success  rounded-circle justify-content-center align-items-center">
-                                        <i style="font-size: 10px" class="fas fa-minus"></i>
-                                    </div>
-                                    {{ task.get_status_display }}
-                                {% else %}
-                                    <div style="height: 16px; width: 16px"
-                                         class="d-inline-flex  p-1 small text-white bg-secondary  rounded-circle justify-content-center align-items-center">
-                                        <i style="font-size: 10px" class="fas fa-minus"></i>
-                                    </div>
-                                    {{ task.get_status_display }}
-                                {% endif %}
-                            </th>
-                            <td>{{ task.createdAt | date:"d M, Y H:i" }}</td>
-                            <td>{{ task.due_date | date:"d M, Y H:i" }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header py-2 font-weight-bold d-flex justify-content-between align-items-center">
+            Onboarding Tasks
+            <a href="{% url 'app_tasks_personal_list' %}"
+               class="btn btn-outline-info borderless w-auto">
+                <span class="font-weight-bold ml-1 text-capitalize">View All</span>
+            </a>
         </div>
-    {% endif %}
+        <div class="table-responsive position-relative" style="min-height: 200px">
+           {% if tasks.count %}
+               <table class="table card-table">
+                <thead class="thead-light">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Stage</th>
+                    <th>Done</th>
+                    <th>Assigned At</th>
+                    <th>Due At</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{% url 'app_tasks_personal_details' pk=task.id %}"
+                               class="btn btn-outline-info borderless w-auto">
+                                <span class="fas fa-edit"></span>
+                                <span class="font-weight-bold ml-1 text-capitalize">Edit</span>
+                            </a>
+                            {#                                {% if task.status == "Pending" %}#}
+                            {##}
+                            {#                                    {% if task.task.task_type == "file" %}#}
+                            {#                                        <a href="{% url 'app_job_task_details' pk=task.id %}"#}
+                            {#                                           class="btn btn-outline-info borderless w-auto">#}
+                            {#                                            <span class="fas fa-upload"></span>#}
+                            {#                                            <span class="font-weight-bold ml-1 text-capitalize">Upload</span>#}
+                            {#                                        </a>#}
+                            {#                                    {% else %}#}
+                            {#                                        {% if task.due_date > now %}#}
+                            {#                                            <button disabled type="button"#}
+                            {#                                                    class="btn btn-outline-info borderless w-auto">#}
+                            {#                                                <span class="fas fa-chess-board"></span>#}
+                            {#                                                <span class="font-weight-bold ml-1 text-capitalize">Attend</span>#}
+                            {#                                            </button>#}
+                            {#                                        {% else %}#}
+                            {#                                            <a href="{% url 'app_job_offerings_details' pk=task.id %}"#}
+                            {#                                               class="btn btn-outline-info borderless w-auto">#}
+                            {#                                                <span class="fas fa-chess-board"></span>#}
+                            {#                                                <span class="font-weight-bold ml-1 text-capitalize">Attend</span>#}
+                            {#                                            </a>#}
+                            {#                                        {% endif %}#}
+                            {#                                    {% endif %}#}
+                            {#                                {% endif %}#}
+
+                        </th>
+                        <td>{{ task.task.name | title }}</td>
+                        <td>{{ task.task.get_task_type_display }}</td>
+                        <td>{{ task.task.get_stage_display }}</td>
+                        <th scope="row">
+                            {% if task.status == "Done" %}
+                                <div style="height: 16px; width: 16px"
+                                     class="d-inline-flex  p-1 small text-white bg-success  rounded-circle justify-content-center align-items-center">
+                                    <i style="font-size: 10px" class="fas fa-minus"></i>
+                                </div>
+                                {{ task.get_status_display }}
+                            {% else %}
+                                <div style="height: 16px; width: 16px"
+                                     class="d-inline-flex  p-1 small text-white bg-secondary  rounded-circle justify-content-center align-items-center">
+                                    <i style="font-size: 10px" class="fas fa-minus"></i>
+                                </div>
+                                {{ task.get_status_display }}
+                            {% endif %}
+                        </th>
+                        <td>{{ task.createdAt | date:"d M, Y H:i" }}</td>
+                        <td>{{ task.due_date | date:"d M, Y H:i" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+           	{% else %}
+               <div style="inset: 0" class="d-flex position-absolute align-items-center justify-content-center gap-4 flex-column">
+               <i class="fas fa-database text-secondary fa-3x"></i>
+               <p class="mb-0">No Onboarding Tasks</p>
+               </div>
+           {% endif %} 
+            
+        </div>
+    </div>
 {% endblock %}

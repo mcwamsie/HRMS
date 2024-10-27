@@ -1,0 +1,38 @@
+{% if object_list.count %}
+    <div class="table-responsive mb-4">
+        <table class="table card-table table-sm">
+            <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Submitted Date</th>
+                <th>Questions Answered</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'app_surveys_details' pk=object.id %}" class="btn btn-outline-info borderless w-auto">
+                            <span class="fas fa-eye"></span>
+                            <span class="font-weight-bold ml-1 text-capitalize">View</span>
+                        </a>
+                    </td>
+                    <th scope="row" class="text-left font-weight-bold">
+                        {{ object.employee | title }} 
+                    </th>
+                    <th scope="row" class="text-left">
+                        {{ object.createdAt | timesince }} Ago
+                    </th>
+                    <td class="text-left">{{ object.values.count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    {% include "layouts/includes/empty-datatable.html" %}
+{% endif %}  
+

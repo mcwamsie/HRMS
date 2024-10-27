@@ -1,19 +1,19 @@
 {% extends "layouts/app.layout.html" %}
 
 {% block app-content %}
-    {% include "includes/survey_details/header.html" %}
+    {% include "includes/personal_survey_details/header.html" %}
     <div class="card">
         <div class="card-body">
-        <div class="mb-5 bg-light p-2">
-            <div class=" mb-2">
-                <span class="font-weight-bold">Employee:</span>
-                <span class="font-weight-normal">{{ object.employee | title }}</span>
-            </div>
-            <div class=" mb-2">
-                <span class="font-weight-bold">Submitted:</span>
-                <span class="font-weight-normal">{{ object.createdAt | timesince }} Ago</span>
-            </div>
-        </div>
+{#        <div class="mb-5 bg-light p-2">#}
+{#            <div class=" mb-2">#}
+{#                <span class="font-weight-bold">Employee:</span>#}
+{#                <span class="font-weight-normal">{{ object.employee | title }}</span>#}
+{#            </div>#}
+{#            <div class=" mb-2">#}
+{#                <span class="font-weight-bold">Submitted:</span>#}
+{#                <span class="font-weight-normal">{{ object.createdAt | timesince }} Ago</span>#}
+{#            </div>#}
+{#        </div>#}
             
             {% for heading in headings %}
                 {% if heading.field_names|length %}

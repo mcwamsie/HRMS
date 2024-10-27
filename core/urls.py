@@ -3,7 +3,8 @@ from django.urls import path
 from core.views import HomeView, ProfileView, UserRegistrationView, ApplicationListView, JobOfferingListView, \
     NewJobOfferingView, JobOfferingDetailsView, EmployeeListView, NewEmployeeView, PersonalTaskListView, \
     JobApplicationView, PersonalTaskDetailsView, TaskListView, TaskDetailsView, index_view, EmployeeDetailsView, \
-    NewSurveyView, NotificationListView, PersonalSurveyListView, PersonalSurveyDetailsView
+    NewSurveyView, NotificationListView, PersonalSurveyListView, PersonalSurveyDetailsView, SurveyListView, \
+    SurveyDetailsView
 
 urlpatterns = [
     #path('', IndexView.as_view(), name='index'),
@@ -33,6 +34,9 @@ urlpatterns = [
     path('app/personal-surveys/', PersonalSurveyListView.as_view(), name='app_personal_surveys_list'),
     path('app/personal-surveys/new/', NewSurveyView.as_view(), name='app_personal_surveys_new'),
     path('app/personal-surveys/<uuid:pk>/', PersonalSurveyDetailsView.as_view(), name='app_personal_surveys_details'),
+
+path('app/surveys/', SurveyListView.as_view(), name='app_surveys_list'),
+    path('app/surveys/<uuid:pk>/', SurveyDetailsView.as_view(), name='app_surveys_details'),
 
     # path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]

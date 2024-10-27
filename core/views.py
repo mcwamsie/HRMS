@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.utils import timezone
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, FormView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, FormView, DetailView
 
 from HRMS import settings
 from core.forms import RegistrationForm, JobOfferingForm, EmployeeForm, JobAssignmentForm, JobApplicationForm, \
@@ -191,29 +191,16 @@ class NewSurveyView(AccessRequiredMixin, FormView):
         return redirect("app_personal_surveys_list")
 
 
-class PersonalSurveyDetailsView(AccessRequiredMixin, UpdateView):
-    template_name = 'pages/personal_tasks_details.html'
+class PersonalSurveyDetailsView(AccessRequiredMixin, DetailView):
+    template_name = 'pages/personal_survey_details.html'
     required_roles = ["ADMIN", "HR OFFICER", "EMPLOYEE"]
     form_class = DocumentUploadForm
     model = SurveyRecord
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["now"] = timezone.now()
-        context["personal"] = True
+        context["headings"] = SurveyHeading.objects.all().prefetch_related("survey_fields", )
         return context
-
-    def form_valid(self, form):
-        assignment = form.save(commit=False)
-        flag = True
-        if assignment.task.task_type != "file":
-            if assignment.due_date < timezone.now():
-                messages.error(self.request, "This task is not yet due! It can not be approved.")
-                return redirect('personal_task_details', assignment.pk)
-
-        assignment.save()
-        messages.success(self.request, f"Document for task: '{assignment.task.name.title()}' submitted successfully")
-        return redirect('app_tasks_personal_list')
 
 
 # ========================================================================
@@ -247,7 +234,7 @@ class ApplicationListView(LoginRequiredMixin, ListView, SearchFilter):
 
 
 # ========================================================================
-#                       PERSONAL TASKS
+#                       NOTIFICATIONS
 # ========================================================================
 class NotificationListView(AccessRequiredMixin, ListView, SearchFilter):
     template_name = "pages/notifications.html"
@@ -314,12 +301,13 @@ class PersonalTaskDetailsView(AccessRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         assignment = form.save(commit=False)
-        flag = True
+
         if assignment.task.task_type != "file":
             if assignment.due_date < timezone.now():
                 messages.error(self.request, "This task is not yet due! It can not be approved.")
                 return redirect('personal_task_details', assignment.pk)
-
+        else:
+            assignment.status = "Submitted"
         assignment.save()
         messages.success(self.request, f"Document for task: '{assignment.task.name.title()}' submitted successfully")
         return redirect('app_tasks_personal_list')
@@ -544,3 +532,41 @@ class TaskDetailsView(AccessRequiredMixin, UpdateView):
         assignment = form.save(commit=True)
         messages.success(self.request, "Task approved successfully")
         return redirect('app_tasks_list')
+# ========================================================================
+#                       SURVEYS
+# ========================================================================
+class SurveyListView(AccessRequiredMixin, ListView, SearchFilter):
+    template_name = "pages/surveys.html"
+    model = SurveyRecord
+    paginate_by = settings.PAGE_SIZE
+    paginator_class = Paginator
+    total_count = 0
+    required_roles = ["ADMIN", "HR OFFICER", ]
+    search_fields = [
+        "employee__first_name",
+        "employee__last_name",
+        "employee__employee_number",
+        "employee__nationalIdNo",
+    ]
+
+    def get_queryset(self, **kwargs):
+        today = timezone.now().today()
+        queryset = super().get_queryset()
+        self.total_count = queryset.count()
+        return self.filter_queryset_here(request=self.request, queryset=queryset)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total"] = self.total_count
+        return context
+
+class SurveyDetailsView(AccessRequiredMixin, DetailView):
+    template_name = 'pages/survey_details.html'
+    required_roles = ["ADMIN", "HR OFFICER"]
+    form_class = DocumentUploadForm
+    model = SurveyRecord
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["headings"] = SurveyHeading.objects.all().prefetch_related("survey_fields", )
+        return context

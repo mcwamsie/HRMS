@@ -105,8 +105,8 @@ class JobApplicationForm(forms.ModelForm):
 
 
 class DocumentUploadForm(forms.ModelForm):
-    file = forms.FileField(widget=forms.FileInput(), required=True)
-    file_name = forms.CharField(widget=forms.TextInput(), required=True)
+    # file = forms.FileField(widget=forms.FileInput(), required=True)
+    # file_name = forms.CharField(widget=forms.TextInput(), required=True)
 
     class Meta:
         model = Assignment
