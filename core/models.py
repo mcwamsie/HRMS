@@ -725,7 +725,7 @@ def notify_admin_about_file_upload(sender, instance: Assignment, created, **kwar
                author=instance.assigned_to, data={"link": link, "icon": "fas fa-wrench"})
 
         if instance.assigned_to.onboarding_percentage == 100 or instance.assigned_to.pre_onboarding_percentage == 100:
-            link = reverse("app_personal_surveys_news")
+            link = reverse("app_personal_surveys_new")
 
             subject = "Onboarding Survey"
             description = f"{instance.assigned_to.first_name}, you have completed onboarding task. Please let us know about how you feel about this onboarding process"
