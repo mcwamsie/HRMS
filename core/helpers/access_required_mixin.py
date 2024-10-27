@@ -16,7 +16,7 @@ class AccessRequiredMixin(AccessMixin):
             return redirect("login")
 
         if request.user.is_superuser or request.user.is_staff:
-            messages.error(request, "Root user are not allowed to access this page.")
+            messages.error(request, "Root user are not allowed to access the normal user views.")
             return redirect("/admin")
 
         if self.required_roles and request.user.role not in self.required_roles:
