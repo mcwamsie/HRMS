@@ -9,11 +9,11 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView,
 
 from HRMS import settings
 from core.forms import RegistrationForm, JobOfferingForm, EmployeeForm, JobAssignmentForm, JobApplicationForm, \
-    DocumentUploadForm, TaskApprovalForm, SurveyForm
+    DocumentUploadForm, TaskApprovalForm, SurveyForm, EmployeeDocumentUploadForm
 from core.helpers.access_required_mixin import AccessRequiredMixin
 from core.helpers.search_filter import SearchFilter
 from core.models import JobOffering, JobApplication, Employee, Assignment, Notification, SurveyHeading, SurveyRecord, \
-    SurveyField, SurveyRecordValue
+    SurveyField, SurveyRecordValue, FAQCategory
 
 
 # ========================================================================
@@ -121,10 +121,44 @@ class HomeView(AccessRequiredMixin, TemplateView):
         return context
 
 
-class ProfileView(AccessRequiredMixin, TemplateView):
+class ProfileView(AccessRequiredMixin, FormView):
     template_name = "pages/profile.html"
     required_roles = ["ADMIN", "HR OFFICER", "EMPLOYEE", "APPLICANT"]
+    form_class = EmployeeDocumentUploadForm
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['form'] = self.form_class(instance=self.request.user)
+        return context
 
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        form = self.form_class(request.POST, request.FILES, instance=user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, "Your profile documents has been updated!")
+            return redirect('app_profile')
+        return self.render_to_response({
+            "form": form,
+            "user": request.user,
+        })
+
+
+
+# ========================================================================
+#                       FAQ
+# ========================================================================
+class FAQView(LoginRequiredMixin, ListView):
+    template_name = "pages/faq.html"
+    model = FAQCategory
+    total_count = 0
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total"] = self.total_count
+        context["support_email"] = settings.SUPPORT_EMAIL
+        return context
 
 # ========================================================================
 #                       Surveys

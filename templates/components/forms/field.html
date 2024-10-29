@@ -1,55 +1,7 @@
 {% load form_filters %}
 {% load widget_tweaks %}
-{#<div class="flex flex-col gap-0.5 {{ css_classes }}">#}
-{##}
-{#    {% if field.field.widget|is_checkbox %}#}
-{#        <label class="flex gap-1 items-center">#}
-{#            <input type="checkbox" name="{{ field.name }}" id="{{ field.id_for_label }}"#}
-{#                   {% if field.value %}checked{% endif %}>#}
-{#            <span>{{ field.label }}</span>#}
-{#        </label>#}
-{##}
-{#    {% else %}#}
-{#        {% if not hide_label %}#}
-{#            {% if field.field.required %}#}
-{#                <label for="{{ field.id_for_label }}" class="inline-block font-medium peer-invalid:text-red-500">#}
-{#                    {{ field.label }} <span class="text-xs text-red-500 ">*</span>#}
-{#                </label>#}
-{#            {% else %}#}
-{#                <label for="{{ field.id_for_label }}" class="inline-block peer-invalid:text-red-500">#}
-{#                    {{ field.label }}#}
-{#                </label>#}
-{#            {% endif %}#}
-{#        {% endif %}#}
-{#        {% if field.field.widget|is_textarea %}#}
-{#            {% render_field field class+=" peer block appearance-none border rounded-md border-border w-full h-auto px-3 text-gray-700 leading-tight focus:ring-active-500 focus:outline-none focus:shadow-outline" %}#}
-{#        {% elif field.field.widget|is_select_multiple %}#}
-{#            {% if not hide_label %}#}
-{#                {% render_field field class+=" rounded-md" %}#}
-{#            {% else %}#}
-{#                {% render_field field class+=" rounded-md border-less border-none" %}#}
-{#            {% endif %}#}
-{#            {% render_field field class+=" peer block appearance-none border border-border w-full h-auto px-3 text-gray-700 leading-tight focus:ring-active-500 focus:outline-none focus:shadow-outline" %}#}
-{#        {% elif field.field.widget|is_select or field.field.widget|is_contact_list %}#}
-{#            {% if not hide_label %}#}
-{#                {% render_field field class+=" rounded-md" %}#}
-{#            {% else %}#}
-{#                {% render_field field class+=" rounded-md border-less border-none" %}#}
-{#            {% endif %}#}
-{#        {% else %}#}
-{#            {% if not hide_label %}#}
-{#                {% render_field field class+=" peer block appearance-none rounded-md border border-border w-full h-9 px-3 py-1 text-gray-700 leading-tight focus:ring-active-500 focus:outline-none focus:shadow-outline" %}#}
-{#            {% else %}#}
-{#                {% render_field field class+=" peer block appearance-none rounded-none border-none w-full h-full px-3 py-1 text-gray-700 leading-tight focus:ring-active-500 focus:outline-none focus:shadow-outline" %}#}
-{#            {% endif %}#}
-{#        {% endif %}#}
-{#    {% endif %}#}
-{##}
-{#    {% if field.errors and not hide_label %}#}
-{#        <span class="text-red-500">{{ field.errors }}</span>#}
-{#    {% endif %}#}
-{#</div>#}
-<div class="form-group {{ css_classes }}">
+
+<div class="form-group d-flex flex-column {{ css_classes }}">
     {% if field.field.widget|is_checkbox %}
         <label class="custom-control custom-checkbox">
             <input name="{{ field.name }}" id="{{ field.id_for_label }}" type="checkbox"

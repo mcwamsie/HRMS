@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin
 from core.models import Employee, Workflow, Location, Position, Department, JobOffering, JobOfferingRequiredDocument, \
     Task, Assignment, JobAssignments, Notification, SurveyField, SurveyFieldChoice, SurveyRecord, SurveyRecordValue, \
-    SurveyHeading
+    SurveyHeading, FAQItem, FAQCategory
 
 
 # Register your models here.
@@ -14,6 +14,9 @@ class JobOfferingRequiredDocumentAdmin(admin.TabularInline):
 
 class TaskAdmin(admin.TabularInline):
     model = Task
+
+class FAQItemAdmin(admin.TabularInline):
+    model = FAQItem
 
 
 class SurveyFieldChoiceAdmin(admin.TabularInline):
@@ -56,6 +59,7 @@ class MemberAdmin(UserAdmin, ImportExportModelAdmin):
              'profilePhoto', "employee_number", "nationalIdNo", 'first_name', 'last_name', 'phone', 'sex', "address_line_1", 'address_line_2')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',)}),
         ('Important dates', {'fields': ['date_joined']}),
+        ('Documents', {'fields': ['birth_certificate_photo', 'national_id_photo', 'passport_photo']}),
     )
 
     add_fieldsets = (
@@ -71,7 +75,11 @@ class MemberAdmin(UserAdmin, ImportExportModelAdmin):
                 'phone',
                 'sex', 'role',
                 'address_line_1',
-                'address_line_2'),
+                'address_line_2',
+                'birth_certificate_photo',
+                'national_id_photo',
+                'passport_photo'
+            ),
         }),
     )
 
@@ -120,3 +128,9 @@ class NotificationAdmin(ImportExportModelAdmin):
 class NotificationAdmin(ImportExportModelAdmin):
     list_display = ["ordinal", "name"]
     search_fields = ["name"]
+
+@admin.register(FAQCategory)
+class FAQCategoryAdmin(ImportExportModelAdmin):
+    list_display = ["name", "icon_class"]
+    search_fields = ["name"]
+    inlines = [FAQItemAdmin]

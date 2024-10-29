@@ -31,7 +31,7 @@
         <div class="col-12">
             <div class="card card-statistics">
                 <div class="card-body p-0">
-                    <div class="row no-gutters">
+                    <div class="row justify-content-between no-gutters">
                         <div class="col-12 col-xl-3 pb-xl-0 pb-5 border-right">
                             <div class="page-account-profile pt-5">
                                 <div class="profile-img text-center rounded-circle">
@@ -106,12 +106,12 @@
                                                 <p class="font-weight-bold mb-0">Address:</p>
                                                 <p class="text-wrap font-weight-normal">{{ request.user.address }}</p>
                                             </div>
-                                            
+
                                         {% endif %}
                                         {% if request.user.active_assignment %}
                                             <div class="col-12 bg-secondary-dark p-2 text-white col-md-12 my-4">
-                                            <p class="font-weight-bold mb-0">Employment Information</p>
-                                        </div>
+                                                <p class="font-weight-bold mb-0">Employment Information</p>
+                                            </div>
                                             <div class="col-12 col-md-12 mb-2">
                                                 <span class="font-weight-bold">Title:</span>
                                                 <span class="font-weight-normal">{{ request.user.active_assignment.position.name | title }}</span>
@@ -120,7 +120,7 @@
                                                 <span class="font-weight-bold">Department:</span>
                                                 <span class="font-weight-normal">{{ request.user.active_assignment.position.department | title }}</span>
                                             </div>
-                                             <div class="col-12 col-md-12 mb-2">
+                                            <div class="col-12 col-md-12 mb-2">
                                                 <span class="font-weight-bold">Type:</span>
                                                 <span class="font-weight-normal">{{ request.user.active_assignment.get_type_display | title }}</span>
                                             </div>
@@ -129,44 +129,71 @@
                                                 <span class="font-weight-normal">{{ request.user.active_assignment.start_date | date:"d M, Y H:i" }}</span>
                                             </div>
                                             {% if  request.user.active_assignment.end_date %}
-                                            	<div class="col-12 col-md-12 mb-2">
-                                                <span class="font-weight-bold">End Date:</span>
-                                                <span class="font-weight-normal">{{ request.user.active_assignment.end_date | date:"d M, Y H:i" }}</span>
-                                            </div>
-                                            {% endif %} 
+                                                <div class="col-12 col-md-12 mb-2">
+                                                    <span class="font-weight-bold">End Date:</span>
+                                                    <span class="font-weight-normal">{{ request.user.active_assignment.end_date | date:"d M, Y H:i" }}</span>
+                                                </div>
+                                            {% endif %}
                                         {% else %}
                                             <div class="col-12 col-md-12 mb-4">
                                                 <span class="font-weight-bold">Title:</span>
                                                 <span class="font-weight-normal">Unassigned</span>
                                             </div>
                                         {% endif %}
-                                    </div>s
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6 border-t col-12">
+                        <div class="col-12 col-xl-3 col-md-4 border-t col-12">
                             <div class="page-account-form">
                                 <div class="form-titel border-bottom p-3">
-                                    <h5 class="mb-0 py-2">Your External Link</h5>
+                                    <h5 class="mb-0 py-2">Personal Documents</h5>
                                 </div>
                                 <div class="p-4">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="fb">Facebook URL:</label>
-                                            <input type="text" class="form-control" id="fb"
-                                                   value="https://www.facebook.com/">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tr">Twitter URL:</label>
-                                            <input type="text" class="form-control" id="tr"
-                                                   value="https://twitter.com/">
-                                        </div>
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% if user.birth_certificate_photo %}
+                                            <div class="form-group">
+                                                <a href="{{ user.birth_certificate_photo.url }}" target="_blank"
+                                                   class="btn text-left btn-outline-primary borderless btn-block">
+                                                    <i class="fas fa-download mr-1"></i>
+                                                    <span>Birth Certificate</span>
+                                                </a>
+                                            {{ form.birth_certificate_photo.as_hidden }}
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="li">LinkedIn URL:</label>
-                                            <input type="text" class="form-control" id="li"
-                                                   value="https://in.linkedin.com/">
-                                        </div>
+                                        {% else %}
+                                            {% include "components/forms/field.html" with field=form.birth_certificate_photo %}
+                                        {% endif %}
+                                        {% if user.national_id_photo %}
+                                            <div class="form-group">
+                                                <a href="{{ user.national_id_photo.url }}" target="_blank"
+                                                   class="btn text-left btn-outline-primary borderless btn-block">
+                                                    <i class="fas fa-download mr-1"></i>
+                                                    <span>National ID</span>
+                                                </a>
+                                            {{ form.national_id_photo.as_hidden }}
+                                            </div>
+
+                                        {% else %}
+                                            {% include "components/forms/field.html" with field=form.national_id_photo %}
+                                        {% endif %}
+                                        {% if user.passport_photo %}
+                                            <div class="form-group">
+                                                <a href="{{ user.passport_photo.url }}" target="_blank"
+                                                   class="btn text-left btn-outline-primary borderless btn-block">
+                                                    <i class="fas fa-download mr-1"></i>
+                                                    <span>Passport</span>
+                                                </a>
+                                            {{ form.passport_photo.as_hidden }}
+                                            </div>
+
+                                        {% else %}
+                                        {% include "components/forms/field.html" with field=form.passport_photo %}
+                                            
+                                            
+                                        {% endif %}
                                         <button type="submit" class="btn btn-primary">Save &amp; Update</button>
                                     </form>
                                 </div>

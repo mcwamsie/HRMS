@@ -219,3 +219,16 @@ class SurveyForm(forms.Form):
                         }),
                     required=field.required,
                 )
+
+class EmployeeDocumentUploadForm(forms.ModelForm):
+    # file = forms.FileField(widget=forms.FileInput(), required=True)
+    # file_name = forms.CharField(widget=forms.TextInput(), required=True)
+
+    class Meta:
+        model = Employee
+        fields = [
+            "birth_certificate_photo",
+            "national_id_photo",
+            "passport_photo",
+        ]
+

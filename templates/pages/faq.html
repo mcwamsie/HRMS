@@ -1,0 +1,71 @@
+{% extends "layouts/app.layout.html" %}
+{% load static %}
+
+{% block app-content %}
+    {% include "includes/personal_surveys_list/header.html" %}
+    <div class="row">
+        <div class="col-lg-4 col-xl-3">
+
+            <div>
+                {% for object in object_list %}
+                    <a href="javascript:void(0)" class="media align-items-center bg-lighter text-dark py-3 px-4">
+                        <div class="{{ object.icon_class }} ui-w-30 text-center text-xlarge"></div>
+                        <div class="media-body ml-3">
+                            {{ object.name }}
+                            <div class="text-muted small">
+                                {{ object.description }}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4 mb-5">
+                <a href="mailto:{{ support_email }}" type="button" class="btn btn-outline-primary">Contact Support</a>
+            </div>
+
+        </div>
+        <div class="col">
+            {% for category in object_list %}
+                <div class="media align-items-center my-4 h4">
+                    <div class="{{ category.icon_class }} ui-w-60 text-center text-large"></div>
+                    <div class="media-body ml-1">
+                        {{ category.name }}
+                        <div class="text-muted text-tiny font-weight-light">
+                            {{ category.description }}
+                        </div>
+                    </div>
+                </div>
+
+                {% for item in category.items.all %}
+                    <div class="bg-white ui-bordered mb-2">
+                        <a href="#{{ category.name |slugify }}-{{ forloop.counter }}"
+                           class="d-flex justify-content-between text-dark py-3 px-4"
+                           data-toggle="collapse">{{ item.heading }}<span class="collapse-icon"></span></a>
+                        <div id="{{ category.name |slugify }}-{{ forloop.counter }}" class="collapse text-muted">
+                            <div class="px-4 pb-3 text-wrap">{{ item.text }}</div>
+                            {% if item.type == "I" %}
+                                <div class="p-2">
+                                <img class="w-100 img-fluid" src="{{ item.image_file.url }}" alt="{{ item.heading }}"/>
+                                </div>
+                            	
+                            {% elif item.type == "V" %}
+                                <div class="p-2">
+                                <video controls="" class="w-100 img-fluid" src="{{ item.video_file.url }}"></video>
+                                </div>
+                            	
+                            {% endif %} 
+                        </div>
+                    </div>
+                {% endfor %}
+                <hr class="my-3">
+            {% endfor %}
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "assets/fonts/ionicons.css" %}">
+{% endblock %}

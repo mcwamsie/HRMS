@@ -8,6 +8,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
@@ -62,6 +63,13 @@ class Employee(AbstractUser, PermissionsMixin):
                                     verbose_name="Nation ID Number")
     profilePhoto = models.ImageField(blank=True, null=True, upload_to="users/profile-photos",
                                      verbose_name="Profile Photo")
+
+    birth_certificate_photo = models.ImageField(blank=True, null=True, verbose_name="Birth Certificate",
+                                                upload_to="users/birth-certificate-photo", )
+    national_id_photo = models.ImageField(blank=True, null=True, verbose_name="National ID",
+                                          upload_to="users/national-id-photos", )
+    passport_photo = models.ImageField(blank=True, null=True, verbose_name="Passport", upload_to="users/passport", )
+
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(max_length=255, unique=True, )
     phone = PhoneNumberField(max_length=20, verbose_name="Phone Number")
@@ -647,9 +655,10 @@ class SurveyRecord(BaseModel):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="surveys")
 
     class Meta:
-        ordering=["-createdAt"]
+        ordering = ["-createdAt"]
         verbose_name = "Survey Record"
         verbose_name_plural = "Survey Records"
+
 
 class SurveyRecordValue(BaseModel):
     record = models.ForeignKey(SurveyRecord, on_delete=models.CASCADE, related_name="values")
@@ -665,6 +674,68 @@ class SurveyRecordValue(BaseModel):
 
     class Meta:
         unique_together = ["record", "field"]
+
+
+class FAQCategory(BaseModel):
+    name = models.CharField(max_length=255, unique=True)
+    icon_class = models.CharField(max_length=255, verbose_name="Icon Class")
+    description = models.CharField(max_length=255, default="Donec sagittis urna eu leo")
+    def __str__(self):
+        return self.name.upper()
+
+    class Meta:
+        verbose_name = "FAQ Category"
+        verbose_name_plural = "FAQ Categories"
+
+
+class FAQItem(BaseModel):
+    heading = models.TextField()
+    category = models.ForeignKey(FAQCategory, on_delete=models.CASCADE, related_name="items")
+    TYPE_CHOICES = [
+        ("T", "Text"),
+        ("V", "Video"),
+        ("I", "Image"),
+        ("A", "Audio"),
+    ]
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+    image_file = models.FileField(upload_to="faq/images/", null=True, blank=True, verbose_name="Image File",)
+    video_file = models.FileField(upload_to="faq/videos/", null=True, blank=True, verbose_name="Video File",
+                                  validators=[FileExtensionValidator(["mp4", "avi", "mkv"])])
+    audio_file = models.FileField(upload_to="faq/audio/", null=True, blank=True, verbose_name="Audio File",
+                                  validators=[FileExtensionValidator(["mp3", "opus"])])
+    text = models.TextField()
+
+    def clean(self):
+        if self.type == "V" and not self.video_file:
+            raise ValidationError({"video_file": "Video file is required"})
+        if self.type == "I" and not self.image_file:
+            raise ValidationError({"image_file": "Video file is required"})
+        if self.type == "A" and not self.audio_file:
+            raise ValidationError({"audio_file": "Audio file is required"})
+        return super().clean()
+
+    def save(self, *args, **kwargs):
+        if self.image_file:
+            self.video_file = None
+            self.audio_file = None
+        elif self.video_file:
+            self.audio_file = None
+            self.image_file = None
+        elif self.audio_file:
+            self.video_file = None
+            self.image_file = None
+        else:
+            self.video_file = None
+            self.image_file = None
+            self.audio_file = None
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.category) + " - " + self.heading
+
+    class Meta:
+        verbose_name = "FAQ Item"
+        verbose_name_plural = "FAQ Items"
 
 
 @receiver(post_save, sender=Employee)

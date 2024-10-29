@@ -4,7 +4,7 @@ from core.views import HomeView, ProfileView, UserRegistrationView, ApplicationL
     NewJobOfferingView, JobOfferingDetailsView, EmployeeListView, NewEmployeeView, PersonalTaskListView, \
     JobApplicationView, PersonalTaskDetailsView, TaskListView, TaskDetailsView, index_view, EmployeeDetailsView, \
     NewSurveyView, NotificationListView, PersonalSurveyListView, PersonalSurveyDetailsView, SurveyListView, \
-    SurveyDetailsView
+    SurveyDetailsView, FAQView
 
 urlpatterns = [
     #path('', IndexView.as_view(), name='index'),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('app/notifications/', NotificationListView.as_view(), name='app_notifications'),
     path('app/profile/', ProfileView.as_view(), name='app_profile'),
     path('app/applications/', ApplicationListView.as_view(), name='app_application_list'),
+    path('app/faq/', FAQView.as_view(), name='app_faq'),
 
     path('app/job-offerings/', JobOfferingListView.as_view(), name='app_job_offerings_list'),
     path('app/job-offerings/new/', NewJobOfferingView.as_view(), name='app_job_offerings_new'),

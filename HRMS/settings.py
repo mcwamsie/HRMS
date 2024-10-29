@@ -174,3 +174,4 @@ else:
 
 
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+SUPPORT_EMAIL = os.getenv("SUPPORT_EMAIL", "tmcwamsie@gmail.com")
