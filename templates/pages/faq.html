@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block app-content %}
-    {% include "includes/personal_surveys_list/header.html" %}
+    {% include "includes/faq/header.html" %}
     <div class="row">
         <div class="col-lg-4 col-xl-3">
 
@@ -46,15 +46,28 @@
                             <div class="px-4 pb-3 text-wrap">{{ item.text }}</div>
                             {% if item.type == "I" %}
                                 <div class="p-2">
-                                <img class="w-100 img-fluid" src="{{ item.image_file.url }}" alt="{{ item.heading }}"/>
+                                    <img class="w-100 img-fluid" src="{{ item.image_file.url }}"
+                                         alt="{{ item.heading }}"/>
                                 </div>
-                            	
+
                             {% elif item.type == "V" %}
                                 <div class="p-2">
-                                <video controls="" class="w-100 img-fluid" src="{{ item.video_file.url }}"></video>
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <video  class="video-js embed-responsive-item"
+    controls
+    preload="auto"
+    width="640"
+    height="264"
+    data-setup="{}">
+                                        <source src="{{ item.video_file.url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
                                 </div>
-                            	
-                            {% endif %} 
+                                    {#                                <video controls="" class="w-100 img-fluid" src="{{ item.video_file.url }}"></video>#}
+                                </div>
+                                
+
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -67,5 +80,8 @@
 {% endblock %}
 
 {% block styles %}
+    <link href="https://vjs.zencdn.net/7.18.1/video-js.css" rel="stylesheet" />
+<script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
     <link rel="stylesheet" href="{% static "assets/fonts/ionicons.css" %}">
+  
 {% endblock %}

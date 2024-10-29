@@ -686,7 +686,7 @@ class FAQCategory(BaseModel):
     class Meta:
         verbose_name = "FAQ Category"
         verbose_name_plural = "FAQ Categories"
-
+        ordering =["createdAt"]
 
 class FAQItem(BaseModel):
     heading = models.TextField()
